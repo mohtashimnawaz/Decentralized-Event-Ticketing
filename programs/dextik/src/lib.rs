@@ -12,14 +12,29 @@ pub mod dextik {
     }
 
     // 1. Create a new event
-    pub fn create_event(ctx: Context<CreateEvent>, name: String, total_tickets: u32, ticket_price: u64, royalty_bps: u16) -> Result<()> {
+    pub fn create_event(
+        ctx: Context<CreateEvent>, 
+        name: String, 
+        total_tickets: u32, 
+        ticket_price: u64, 
+        royalty_bps: u16,
+        event_date: i64,
+        venue: String,
+        description: String
+    ) -> Result<()> {
         let event = &mut ctx.accounts.event;
+        let clock = Clock::get()?;
+        
         event.name = name;
         event.organizer = ctx.accounts.organizer.key();
         event.total_tickets = total_tickets;
         event.tickets_sold = 0;
         event.ticket_price = ticket_price;
         event.royalty_bps = royalty_bps;
+        event.event_date = event_date;
+        event.venue = venue;
+        event.description = description;
+        event.created_at = clock.unix_timestamp;
         Ok(())
     }
 
@@ -115,4 +130,8 @@ pub struct Event {
     pub tickets_sold: u32,
     pub ticket_price: u64,
     pub royalty_bps: u16, // basis points (e.g. 500 = 5%)
+    pub event_date: i64,  // Unix timestamp for event date
+    pub venue: String,    // Event venue/location
+    pub description: String, // Event description
+    pub created_at: i64,  // Creation timestamp
 }
