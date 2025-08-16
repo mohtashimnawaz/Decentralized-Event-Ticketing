@@ -1,8 +1,13 @@
 use anchor_lang::prelude::*;
 
-declare_id!("2DgdaYVe3y38aHABcbyJxa4sKbirWWkW8P4UaTWD2SNk");
-
-#[program]
+declare_id!("2DgdaYVe3y38aHABcbyJxa4sKbirWWkW8P4UaTWD2#[derive(Accounts)]
+pub struct CreateEvent<'info> {
+    #[account(init, payer = organizer, space = 8 + 32 + 32 + 4 + 4 + 8 + 2 + 8 + 64 + 256 + 8 + 64)] // Increased space for new fields
+    pub event: Account<'info, Event>,
+    #[account(mut)]
+    pub organizer: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}#[program]
 pub mod dextik {
     use super::*;
 
