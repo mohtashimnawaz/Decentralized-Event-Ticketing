@@ -1,11 +1,12 @@
 import { AnchorProvider, Program, setProvider } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
+import { AnchorWallet } from "@solana/wallet-adapter-react";
 import idl from "./idl/dextik.json";
 
 // Use the program ID from the IDL
 export const PROGRAM_ID = new PublicKey(idl.address);
 
-export function getProvider(wallet?: any) {
+export function getProvider(wallet?: AnchorWallet) {
   if (!wallet) {
     throw new Error("Wallet not connected");
   }
@@ -26,7 +27,7 @@ export function getProvider(wallet?: any) {
   return provider;
 }
 
-export function getProgram(wallet?: any) {
+export function getProgram(wallet: AnchorWallet): Program {
   try {
     const provider = getProvider(wallet);
     console.log("Creating program with ID:", PROGRAM_ID.toString());

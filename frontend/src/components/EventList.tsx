@@ -1,13 +1,26 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
 import { getProgram } from "../anchor";
 import MintTicket from "./MintTicket";
 import WalletConnectButton from "./WalletConnectButton";
+import { motion } from "framer-motion";
 
 export default function EventList() {
   const wallet = useAnchorWallet();
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<Array<{
+    name: string;
+    organizer: PublicKey;
+    totalTickets: number;
+    ticketsSold: number;
+    ticketPrice: number;
+    royaltyBps: number;
+    eventDate?: { toNumber(): number };
+    venue?: string;
+    description?: string;
+    pubkey: PublicKey;
+  }>>([]);
   const [loading, setLoading] = useState(false);
 
   const fetchEvents = async () => {
@@ -88,16 +101,31 @@ export default function EventList() {
   );
 
   return (
-    <div className="space-y-6">
+    <motion.div 
+      className="space-y-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6 }}
+    >
       <div className="grid gap-6">
         {events.map((event: any, i: number) => (
-          <div key={`event-${i}-${event.organizer?.toString()}`} 
-               className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 hover:bg-white/10 transition-all duration-200">
+          <motion.div 
+            key={`event-${i}-${event.organizer?.toString()}`} 
+            className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 hover:bg-white/10 transition-all duration-200"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1, duration: 0.5 }}
+            whileHover={{ scale: 1.02, y: -5 }}
+          >
             <div className="flex justify-between items-start mb-4">
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center">
+                <motion.div 
+                  className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center"
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.5 }}
+                >
                   <span className="text-white font-bold">🎪</span>
-                </div>
+                </motion.div>
                 <div>
                   <h4 className="text-xl font-bold text-white">{event.name}</h4>
                   <p className="text-sm text-gray-400">
@@ -115,34 +143,55 @@ export default function EventList() {
                   )}
                 </div>
               </div>
-              <span className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm font-medium">
+              <motion.span 
+                className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm font-medium"
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ repeat: Infinity, duration: 2 }}
+              >
                 Live
-              </span>
+              </motion.span>
             </div>
             
             {event.description && (
-              <div className="mb-4 p-3 bg-white/5 rounded-lg border border-white/10">
+              <motion.div 
+                className="mb-4 p-3 bg-white/5 rounded-lg border border-white/10"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                transition={{ delay: 0.2 }}
+              >
                 <p className="text-gray-300 text-sm">{event.description}</p>
-              </div>
+              </motion.div>
             )}
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              <div className="text-center">
+              <motion.div 
+                className="text-center"
+                whileHover={{ scale: 1.1 }}
+              >
                 <p className="text-2xl font-bold text-white">{event.totalTickets}</p>
                 <p className="text-sm text-gray-400">Total Tickets</p>
-              </div>
-              <div className="text-center">
+              </motion.div>
+              <motion.div 
+                className="text-center"
+                whileHover={{ scale: 1.1 }}
+              >
                 <p className="text-2xl font-bold text-purple-400">{event.ticketsSold}</p>
                 <p className="text-sm text-gray-400">Sold</p>
-              </div>
-              <div className="text-center">
+              </motion.div>
+              <motion.div 
+                className="text-center"
+                whileHover={{ scale: 1.1 }}
+              >
                 <p className="text-2xl font-bold text-green-400">{(event.ticketPrice / 1000000000).toFixed(3)}</p>
                 <p className="text-sm text-gray-400">SOL</p>
-              </div>
-              <div className="text-center">
+              </motion.div>
+              <motion.div 
+                className="text-center"
+                whileHover={{ scale: 1.1 }}
+              >
                 <p className="text-2xl font-bold text-yellow-400">{event.royaltyBps / 100}%</p>
                 <p className="text-sm text-gray-400">Royalty</p>
-              </div>
+              </motion.div>
             </div>
             
             <div className="flex space-x-3">
@@ -150,13 +199,17 @@ export default function EventList() {
                 eventKey={event.pubkey.toString()} 
                 onSuccess={fetchEvents}
               />
-              <button className="flex-1 bg-white/10 hover:bg-white/20 text-white font-medium py-3 px-4 rounded-xl transition-all duration-200 border border-white/20">
+              <motion.button 
+                className="flex-1 bg-white/10 hover:bg-white/20 text-white font-medium py-3 px-4 rounded-xl transition-all duration-200 border border-white/20"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 View Details
-              </button>
+              </motion.button>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -7,6 +7,7 @@ import { PublicKey, Keypair, SystemProgram } from "@solana/web3.js";
 import { BN } from "@coral-xyz/anchor";
 import { getProgram } from "../anchor";
 import WalletConnectButton from "./WalletConnectButton";
+import { motion } from "framer-motion";
 
 export default function CreateEvent() {
   const wallet = useAnchorWallet();
@@ -112,88 +113,130 @@ export default function CreateEvent() {
   }
 
   return (
-    <div className="space-y-6">
+    <motion.div 
+      className="space-y-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
       <div className="space-y-4">
-        <div>
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1 }}
+        >
           <label className="block text-sm font-medium mb-2 text-white">Event Name:</label>
           <input
             type="text"
             value={formData.name}
             onChange={(e) => setFormData({...formData, name: e.target.value})}
-            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
+            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200"
             placeholder="Enter event name"
           />
+        </motion.div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <label className="block text-sm font-medium mb-2 text-white">Total Tickets:</label>
+            <input
+              type="number"
+              value={formData.totalTickets}
+              onChange={(e) => setFormData({...formData, totalTickets: Number(e.target.value)})}
+              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200"
+              placeholder="100"
+            />
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <label className="block text-sm font-medium mb-2 text-white">Ticket Price (lamports):</label>
+            <input
+              type="number"
+              value={formData.ticketPrice}
+              onChange={(e) => setFormData({...formData, ticketPrice: Number(e.target.value)})}
+              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200"
+              placeholder="1000000 (≈ 0.001 SOL)"
+            />
+          </motion.div>
         </div>
         
-        <div>
-          <label className="block text-sm font-medium mb-2 text-white">Total Tickets:</label>
-          <input
-            type="number"
-            value={formData.totalTickets}
-            onChange={(e) => setFormData({...formData, totalTickets: Number(e.target.value)})}
-            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
-            placeholder="100"
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <label className="block text-sm font-medium mb-2 text-white">Royalty (basis points, 500 = 5%):</label>
+            <input
+              type="number"
+              value={formData.royaltyBps}
+              onChange={(e) => setFormData({...formData, royaltyBps: Number(e.target.value)})}
+              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200"
+              placeholder="500"
+            />
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <label className="block text-sm font-medium mb-2 text-white">Event Date:</label>
+            <input
+              type="datetime-local"
+              value={formData.eventDate}
+              onChange={(e) => setFormData({...formData, eventDate: e.target.value})}
+              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200"
+            />
+          </motion.div>
         </div>
         
-        <div>
-          <label className="block text-sm font-medium mb-2 text-white">Ticket Price (lamports):</label>
-          <input
-            type="number"
-            value={formData.ticketPrice}
-            onChange={(e) => setFormData({...formData, ticketPrice: Number(e.target.value)})}
-            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
-            placeholder="1000000 (≈ 0.001 SOL)"
-          />
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium mb-2 text-white">Royalty (basis points, 500 = 5%):</label>
-          <input
-            type="number"
-            value={formData.royaltyBps}
-            onChange={(e) => setFormData({...formData, royaltyBps: Number(e.target.value)})}
-            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
-            placeholder="500"
-          />
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium mb-2 text-white">Event Date:</label>
-          <input
-            type="datetime-local"
-            value={formData.eventDate}
-            onChange={(e) => setFormData({...formData, eventDate: e.target.value})}
-            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
-          />
-        </div>
-        
-        <div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
           <label className="block text-sm font-medium mb-2 text-white">Venue:</label>
           <input
             type="text"
             value={formData.venue}
             onChange={(e) => setFormData({...formData, venue: e.target.value})}
-            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
+            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200"
             placeholder="Enter venue location"
           />
-        </div>
+        </motion.div>
         
-        <div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
           <label className="block text-sm font-medium mb-2 text-white">Description:</label>
           <textarea
             value={formData.description}
             onChange={(e) => setFormData({...formData, description: e.target.value})}
-            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent resize-none"
+            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent resize-none transition-all duration-200"
             placeholder="Enter event description"
             rows={3}
           />
-        </div>
+        </motion.div>
         
-        <button
+        <motion.button
           onClick={handleCreateEvent}
           disabled={creating || !formData.name}
           className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
         >
           {creating ? (
             <span className="flex items-center justify-center">
@@ -206,8 +249,8 @@ export default function CreateEvent() {
           ) : (
             "Create Event"
           )}
-        </button>
+        </motion.button>
       </div>
-    </div>
+    </motion.div>
   );
 }
