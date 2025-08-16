@@ -8,7 +8,7 @@ skip-lint = false
 idl-build = ["anchor-spl/idl-build"]
 
 [programs.localnet]
-dextik = "8AiaaLwqfXjr7rMBPEAdHXfkcZT2kbzRX2y4tBUE9RY4"
+dextik = "2DgdaYVe3y38aHABcbyJxa4sKbirWWkW8P4UaTWD2SNk"
 
 [registry]
 url = "https://api.apr.dev"

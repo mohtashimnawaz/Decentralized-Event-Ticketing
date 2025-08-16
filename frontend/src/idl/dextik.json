@@ -1,0 +1,203 @@
+{
+  "address": "2DgdaYVe3y38aHABcbyJxa4sKbirWWkW8P4UaTWD2SNk",
+  "metadata": {
+    "name": "dextik",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "create_event",
+      "discriminator": [
+        49,
+        219,
+        29,
+        203,
+        22,
+        98,
+        100,
+        87
+      ],
+      "accounts": [
+        {
+          "name": "event",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "organizer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "total_tickets",
+          "type": "u32"
+        },
+        {
+          "name": "ticket_price",
+          "type": "u64"
+        },
+        {
+          "name": "royalty_bps",
+          "type": "u16"
+        }
+      ]
+    },
+    {
+      "name": "initialize",
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [],
+      "args": []
+    },
+    {
+      "name": "mint_ticket",
+      "discriminator": [
+        159,
+        167,
+        223,
+        60,
+        138,
+        6,
+        23,
+        29
+      ],
+      "accounts": [
+        {
+          "name": "event",
+          "writable": true
+        },
+        {
+          "name": "buyer",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "_event_id",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "resell_ticket",
+      "discriminator": [
+        129,
+        5,
+        148,
+        113,
+        63,
+        25,
+        240,
+        226
+      ],
+      "accounts": [
+        {
+          "name": "event",
+          "writable": true
+        },
+        {
+          "name": "seller",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "_ticket_id",
+          "type": "pubkey"
+        },
+        {
+          "name": "_new_price",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Event",
+      "discriminator": [
+        125,
+        192,
+        125,
+        158,
+        9,
+        115,
+        152,
+        233
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "TicketLimitReached",
+      "msg": "Ticket limit per wallet reached for this event."
+    },
+    {
+      "code": 6001,
+      "name": "SoldOut",
+      "msg": "All tickets for this event are sold out."
+    },
+    {
+      "code": 6002,
+      "name": "HoldingPeriodNotMet",
+      "msg": "Ticket cannot be resold before holding period ends."
+    }
+  ],
+  "types": [
+    {
+      "name": "Event",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "organizer",
+            "type": "pubkey"
+          },
+          {
+            "name": "total_tickets",
+            "type": "u32"
+          },
+          {
+            "name": "tickets_sold",
+            "type": "u32"
+          },
+          {
+            "name": "ticket_price",
+            "type": "u64"
+          },
+          {
+            "name": "royalty_bps",
+            "type": "u16"
+          }
+        ]
+      }
+    }
+  ]
+}

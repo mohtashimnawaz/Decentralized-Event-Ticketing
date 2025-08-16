@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-declare_id!("8AiaaLwqfXjr7rMBPEAdHXfkcZT2kbzRX2y4tBUE9RY4");
+declare_id!("2DgdaYVe3y38aHABcbyJxa4sKbirWWkW8P4UaTWD2SNk");
 
 #[program]
 pub mod dextik {
@@ -69,7 +69,7 @@ pub struct Initialize {}
 // Event account: stores event details and organizer
 #[derive(Accounts)]
 pub struct CreateEvent<'info> {
-    #[account(init, payer = organizer, space = 8 + 128)]
+    #[account(init, payer = organizer, space = 8 + 32 + 32 + 4 + 4 + 8 + 2 + 64)] // Increased space for name
     pub event: Account<'info, Event>,
     #[account(mut)]
     pub organizer: Signer<'info>,
