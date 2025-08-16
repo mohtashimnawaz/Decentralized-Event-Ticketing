@@ -16,6 +16,9 @@ export default function CreateEvent() {
     totalTickets: 100,
     ticketPrice: 1000000, // 0.001 SOL in lamports
     royaltyBps: 500, // 5%
+    eventDate: "",
+    venue: "",
+    description: "",
   });
 
   const handleCreateEvent = async () => {
@@ -39,13 +42,21 @@ export default function CreateEvent() {
       const eventKeypair = Keypair.generate();
       console.log("Event keypair:", eventKeypair.publicKey.toString());
       
+      // Convert event date to Unix timestamp
+      const eventTimestamp = formData.eventDate ? 
+        new BN(Math.floor(new Date(formData.eventDate).getTime() / 1000)) : 
+        new BN(0);
+      
       // Call create_event instruction with proper BN conversion
       const tx = await program.methods
         .createEvent(
           formData.name,
           new BN(formData.totalTickets),
           new BN(formData.ticketPrice),
-          new BN(formData.royaltyBps)
+          new BN(formData.royaltyBps),
+          eventTimestamp,
+          formData.venue,
+          formData.description
         )
         .accounts({
           event: eventKeypair.publicKey,
@@ -65,6 +76,9 @@ export default function CreateEvent() {
         totalTickets: 100,
         ticketPrice: 1000000,
         royaltyBps: 500,
+        eventDate: "",
+        venue: "",
+        description: "",
       });
     } catch (error) {
       console.error("Error creating event:", error);
@@ -141,6 +155,38 @@ export default function CreateEvent() {
             onChange={(e) => setFormData({...formData, royaltyBps: Number(e.target.value)})}
             className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
             placeholder="500"
+          />
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium mb-2 text-white">Event Date:</label>
+          <input
+            type="datetime-local"
+            value={formData.eventDate}
+            onChange={(e) => setFormData({...formData, eventDate: e.target.value})}
+            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
+          />
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium mb-2 text-white">Venue:</label>
+          <input
+            type="text"
+            value={formData.venue}
+            onChange={(e) => setFormData({...formData, venue: e.target.value})}
+            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
+            placeholder="Enter venue location"
+          />
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium mb-2 text-white">Description:</label>
+          <textarea
+            value={formData.description}
+            onChange={(e) => setFormData({...formData, description: e.target.value})}
+            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent resize-none"
+            placeholder="Enter event description"
+            rows={3}
           />
         </div>
         

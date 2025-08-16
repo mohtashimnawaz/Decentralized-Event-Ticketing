@@ -103,12 +103,28 @@ export default function EventList() {
                   <p className="text-sm text-gray-400">
                     {event.organizer.toString().slice(0, 8)}...{event.organizer.toString().slice(-4)}
                   </p>
+                  {event.venue && (
+                    <p className="text-sm text-blue-400 flex items-center mt-1">
+                      📍 {event.venue}
+                    </p>
+                  )}
+                  {event.eventDate && event.eventDate.toNumber() > 0 && (
+                    <p className="text-sm text-green-400 flex items-center mt-1">
+                      📅 {new Date(event.eventDate.toNumber() * 1000).toLocaleDateString()}
+                    </p>
+                  )}
                 </div>
               </div>
               <span className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm font-medium">
                 Live
               </span>
             </div>
+            
+            {event.description && (
+              <div className="mb-4 p-3 bg-white/5 rounded-lg border border-white/10">
+                <p className="text-gray-300 text-sm">{event.description}</p>
+              </div>
+            )}
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
               <div className="text-center">

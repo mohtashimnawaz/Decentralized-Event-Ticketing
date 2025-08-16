@@ -51,6 +51,18 @@
         {
           "name": "royalty_bps",
           "type": "u16"
+        },
+        {
+          "name": "event_date",
+          "type": "i64"
+        },
+        {
+          "name": "venue",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
         }
       ]
     },
@@ -195,6 +207,22 @@
           {
             "name": "royalty_bps",
             "type": "u16"
+          },
+          {
+            "name": "event_date",
+            "type": "i64"
+          },
+          {
+            "name": "venue",
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
           }
         ]
       }

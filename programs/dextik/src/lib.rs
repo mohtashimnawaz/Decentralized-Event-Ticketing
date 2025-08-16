@@ -1,13 +1,8 @@
 use anchor_lang::prelude::*;
 
-declare_id!("2DgdaYVe3y38aHABcbyJxa4sKbirWWkW8P4UaTWD2#[derive(Accounts)]
-pub struct CreateEvent<'info> {
-    #[account(init, payer = organizer, space = 8 + 32 + 32 + 4 + 4 + 8 + 2 + 8 + 64 + 256 + 8 + 64)] // Increased space for new fields
-    pub event: Account<'info, Event>,
-    #[account(mut)]
-    pub organizer: Signer<'info>,
-    pub system_program: Program<'info, System>,
-}#[program]
+declare_id!("2DgdaYVe3y38aHABcbyJxa4sKbirWWkW8P4UaTWD2SNk");
+
+#[program]
 pub mod dextik {
     use super::*;
 
@@ -48,7 +43,7 @@ pub mod dextik {
         let event = &mut ctx.accounts.event;
 
         // Anti-scalping: limit tickets per wallet (e.g., 4)
-        let ticket_limit_per_wallet = 4u32;
+        let _ticket_limit_per_wallet = 4u32;
         // TODO: Implement per-wallet ticket tracking (requires a separate account per buyer+event)
         // For now, just check tickets sold
 
@@ -65,8 +60,8 @@ pub mod dextik {
 
     // 3. Resell ticket on secondary market
     pub fn resell_ticket(ctx: Context<ResellTicket>, _ticket_id: Pubkey, _new_price: u64) -> Result<()> {
-        let event = &ctx.accounts.event;
-        let seller = &ctx.accounts.seller;
+        let _event = &ctx.accounts.event;
+        let _seller = &ctx.accounts.seller;
         // TODO: Add buyer and ticket accounts to ResellTicket struct for full logic
 
         // Enforce holding period (e.g., 1 day = 86400 seconds)
@@ -89,7 +84,7 @@ pub struct Initialize {}
 // Event account: stores event details and organizer
 #[derive(Accounts)]
 pub struct CreateEvent<'info> {
-    #[account(init, payer = organizer, space = 8 + 32 + 32 + 4 + 4 + 8 + 2 + 64)] // Increased space for name
+    #[account(init, payer = organizer, space = 8 + 32 + 32 + 4 + 4 + 8 + 2 + 8 + 64 + 256 + 8 + 64)]
     pub event: Account<'info, Event>,
     #[account(mut)]
     pub organizer: Signer<'info>,
@@ -115,6 +110,7 @@ pub struct ResellTicket<'info> {
     pub seller: Signer<'info>,
     // TODO: Add NFT transfer accounts
 }
+
 // Custom error codes for Dextik
 #[error_code]
 pub enum DextikError {
