@@ -10,8 +10,8 @@ import {
 import { clusterApiUrl } from "@solana/web3.js";
 
 export const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    // You can switch to 'devnet' or 'mainnet-beta' as needed
-    const endpoint = useMemo(() => clusterApiUrl("devnet"), []);
+    // Using localhost for local development
+    const endpoint = useMemo(() => "http://localhost:8899", []);
     const wallets = useMemo(
         () => [
             new PhantomWalletAdapter(),
