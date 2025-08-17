@@ -10,11 +10,14 @@ idl-build = ["anchor-spl/idl-build"]
 [programs.localnet]
 dextik = "2DgdaYVe3y38aHABcbyJxa4sKbirWWkW8P4UaTWD2SNk"
 
+[programs.devnet]
+dextik = "2DgdaYVe3y38aHABcbyJxa4sKbirWWkW8P4UaTWD2SNk"
+
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]

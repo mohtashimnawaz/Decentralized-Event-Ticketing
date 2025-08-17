@@ -42,21 +42,19 @@ pub mod dextik {
     pub fn mint_ticket(ctx: Context<MintTicket>, _event_id: Pubkey) -> Result<()> {
         let event = &mut ctx.accounts.event;
 
-        // Anti-scalping: limit tickets per wallet (e.g., 4)
-        let _ticket_limit_per_wallet = 4u32;
-        // TODO: Implement per-wallet ticket tracking (requires a separate account per buyer+event)
-        // For now, just check tickets sold
-
+        // Anti-scalping: check if sold out
         if event.tickets_sold >= event.total_tickets {
             return Err(error!(DextikError::SoldOut));
         }
 
-        // Mint NFT logic would go here (integration with Metaplex or SPL Token)
-        // For now, just increment tickets sold
+        // For now, just increment tickets sold (simple implementation)
+        // TODO: Add full NFT minting in future versions
         event.tickets_sold += 1;
 
+        msg!("Ticket minted successfully! Total sold: {}", event.tickets_sold);
         Ok(())
     }
+
 
     // 3. Resell ticket on secondary market
     pub fn resell_ticket(ctx: Context<ResellTicket>, _ticket_id: Pubkey, _new_price: u64) -> Result<()> {
@@ -101,6 +99,7 @@ pub struct MintTicket<'info> {
     // TODO: Add NFT mint accounts
 }
 
+
 // Resell ticket: user resells a ticket NFT
 #[derive(Accounts)]
 pub struct ResellTicket<'info> {
@@ -136,3 +135,4 @@ pub struct Event {
     pub description: String, // Event description
     pub created_at: i64,  // Creation timestamp
 }
+

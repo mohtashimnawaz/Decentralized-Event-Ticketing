@@ -11,7 +11,7 @@ export function getProvider(wallet?: AnchorWallet) {
     throw new Error("Wallet not connected");
   }
   
-  const connection = new Connection("http://localhost:8899", {
+  const connection = new Connection("https://api.devnet.solana.com", {
     commitment: "confirmed"
   });
   
