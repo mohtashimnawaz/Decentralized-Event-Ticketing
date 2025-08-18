@@ -63,7 +63,10 @@ export default function EventList() {
   };
 
   useEffect(() => {
-    fetchEvents();
+
+    if (wallet && wallet.publicKey) {
+      fetchEvents();
+    }
   }, [wallet]);
 
     if (!wallet) {
